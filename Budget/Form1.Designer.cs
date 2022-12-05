@@ -24,11 +24,17 @@
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.anneePicker = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.monthPicker = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.sommeActuelleShow = new System.Windows.Forms.TextBox();
             this.depenseMoyenneShow = new System.Windows.Forms.TextBox();
@@ -53,14 +59,15 @@
             this.searchInput = new System.Windows.Forms.Button();
             this.errorLoadingLabel = new System.Windows.Forms.Label();
             this.entreeGridView = new System.Windows.Forms.DataGridView();
-            this.openFile = new System.Windows.Forms.OpenFileDialog();
-            this.entreeBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.raisonDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.montantDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.entreeBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.openFile = new System.Windows.Forms.OpenFileDialog();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -127,6 +134,7 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.groupBox6);
             this.groupBox4.Controls.Add(this.tableLayoutPanel3);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(3, 455);
@@ -135,6 +143,58 @@
             this.groupBox4.TabIndex = 2;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Statistiques";
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.anneePicker);
+            this.groupBox6.Controls.Add(this.label7);
+            this.groupBox6.Controls.Add(this.label6);
+            this.groupBox6.Controls.Add(this.monthPicker);
+            this.groupBox6.Location = new System.Drawing.Point(6, 160);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(491, 56);
+            this.groupBox6.TabIndex = 1;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Paramètres";
+            // 
+            // anneePicker
+            // 
+            this.anneePicker.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.anneePicker.Enabled = false;
+            this.anneePicker.FormattingEnabled = true;
+            this.anneePicker.Location = new System.Drawing.Point(267, 29);
+            this.anneePicker.Name = "anneePicker";
+            this.anneePicker.Size = new System.Drawing.Size(106, 21);
+            this.anneePicker.TabIndex = 14;
+            this.anneePicker.SelectedIndexChanged += new System.EventHandler(this.anneePicker_SelectedIndexChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(264, 13);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(38, 13);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "Année";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(377, 13);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(29, 13);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "Mois";
+            // 
+            // monthPicker
+            // 
+            this.monthPicker.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.monthPicker.FormattingEnabled = true;
+            this.monthPicker.Location = new System.Drawing.Point(379, 29);
+            this.monthPicker.Name = "monthPicker";
+            this.monthPicker.Size = new System.Drawing.Size(106, 21);
+            this.monthPicker.TabIndex = 11;
+            this.monthPicker.SelectedIndexChanged += new System.EventHandler(this.monthPicker_SelectedIndexChanged);
             // 
             // tableLayoutPanel3
             // 
@@ -152,17 +212,16 @@
             this.tableLayoutPanel3.Controls.Add(this.label4, 0, 3);
             this.tableLayoutPanel3.Controls.Add(this.label5, 0, 4);
             this.tableLayoutPanel3.Controls.Add(this.variationMensuelleShow, 1, 0);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 6;
+            this.tableLayoutPanel3.RowCount = 5;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(499, 203);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(499, 138);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // sommeActuelleShow
@@ -393,8 +452,9 @@
             // 
             // entreeGridView
             // 
-            this.entreeGridView.AllowUserToDeleteRows = false;
             this.entreeGridView.AllowUserToOrderColumns = true;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(234)))), ((int)(((byte)(234)))));
+            this.entreeGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.entreeGridView.AutoGenerateColumns = false;
             this.entreeGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.entreeGridView.BackgroundColor = System.Drawing.SystemColors.ControlLight;
@@ -409,14 +469,6 @@
             this.entreeGridView.Name = "entreeGridView";
             this.entreeGridView.Size = new System.Drawing.Size(511, 680);
             this.entreeGridView.TabIndex = 6;
-            // 
-            // openFile
-            // 
-            this.openFile.Filter = "CSV Files (*.csv)|*.csv";
-            // 
-            // entreeBindingSource
-            // 
-            this.entreeBindingSource.DataSource = typeof(Budget.Entree);
             // 
             // dateDataGridViewTextBoxColumn
             // 
@@ -440,6 +492,14 @@
             this.montantDataGridViewTextBoxColumn.HeaderText = "Montant";
             this.montantDataGridViewTextBoxColumn.Name = "montantDataGridViewTextBoxColumn";
             // 
+            // entreeBindingSource
+            // 
+            this.entreeBindingSource.DataSource = typeof(Budget.Entree);
+            // 
+            // openFile
+            // 
+            this.openFile.Filter = "CSV Files (*.csv)|*.csv";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -449,11 +509,13 @@
             this.MaximumSize = new System.Drawing.Size(1050, 800);
             this.MinimumSize = new System.Drawing.Size(1050, 800);
             this.Name = "Form1";
-            this.Text = "Budget";
+            this.Text = "Budget v1.0";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -504,6 +566,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dateDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn raisonDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn montantDataGridViewTextBoxColumn;
+        private System.Windows.Forms.ComboBox monthPicker;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox anneePicker;
+        private System.Windows.Forms.Label label7;
     }
 }
 

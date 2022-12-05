@@ -22,13 +22,21 @@ namespace Budget {
             entryList = new BindingList<Entree>();
             entreeBindingSource = new BindingSource(entryList, null);
             entreeGridView.DataSource = entreeBindingSource;
+            entreeGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.AliceBlue;
+            entreeGridView.EnableHeadersVisualStyles = false;
 
             solde = 0;
 
-            dateInput.Enabled = false;
-            raisonInput.Enabled = false;
-            montantInput.Enabled = false;
-            envoyerButton.Enabled = false;
+            monthPicker.DataSource = new BindingSource(
+                System.Globalization.DateTimeFormatInfo.CurrentInfo.MonthNames
+                .Where(m => m != String.Empty)
+                .Select((m, i) => new { Name = m, Index = i })
+                .ToDictionary(x => x.Index, x => x.Name), null);
+            monthPicker.DisplayMember = "Value";
+            monthPicker.ValueMember = "Key";
+
+            changeStateOfAll(false);
+
             // set base path;
         }
 
@@ -46,7 +54,20 @@ namespace Budget {
             decimal montantValue;
             if (!raisonInput.Text.Equals("") && decimal.TryParse(montantInput.Text.Replace('.', ','), out montantValue) && dateInput.Value != null) {
                 errorLabel.Text = "";
+                
+                Entree tempEntree = new Entree(DateTime.Parse(dateInput.Value.ToString("yyyy-MM-dd")), 
+                    raisonInput.Text, decimal.Parse(montantInput.Text));
+                entryList.Add(tempEntree);
 
+                raisonInput.Text = "";
+                montantInput.Text = "";
+
+                if (tempEntree.Montant < 0)
+                    entreeGridView[2, entreeGridView.Rows.GetLastRow(DataGridViewElementStates.None)].Style.BackColor = Color.PaleVioletRed;
+                else
+                    entreeGridView[2, entreeGridView.Rows.GetLastRow(DataGridViewElementStates.None)].Style.BackColor = Color.DarkSeaGreen;
+
+                calculateStats();
             } else {
                 errorLabel.Text = "Veuillez entrer des informations valides.";
             }
@@ -60,72 +81,85 @@ namespace Budget {
 
                 searchInput.Enabled = false;
 
-                dateInput.Enabled = true;
-                raisonInput.Enabled = true;
-                montantInput.Enabled = true;
-                envoyerButton.Enabled = true;
+                changeStateOfAll(true);
 
                 loadData();
+                calculateStats();
             } else {
                 errorLoadingLabel.Text = "Veuillez entrer un fichier valide.";
 
-                dateInput.Enabled = false;
-                raisonInput.Enabled = false;
-                montantInput.Enabled = false;
-                envoyerButton.Enabled = false;
+                changeStateOfAll(false);
             }
         }
 
         private void loadData() {
             if (File.Exists(path)) {
                 String[] lines = File.ReadAllLines(path);
+                int i = 0;
 
                 foreach (string line in File.ReadAllLines(path)) {
                     String[] splitLine = line.Split(SEPARATOR);
-                    Entree tempEntree = new Entree(DateTime.Parse(splitLine[1]), splitLine[2], decimal.Parse(splitLine[3]));
+                    Entree tempEntree = new Entree(DateTime.Parse(splitLine[0]), splitLine[1], decimal.Parse(splitLine[2]));
 
                     entryList.Add(tempEntree);
+                    if ((decimal) entreeGridView[2, i].Value < 0)
+                        entreeGridView[2, i].Style.BackColor = Color.PaleVioletRed;
+                    else
+                        entreeGridView[2, i].Style.BackColor = Color.DarkSeaGreen;
+                    i++;
                 }
             }
+        }
+
+        private void monthPicker_SelectedIndexChanged(object sender, EventArgs e) {
+            calculateStats();
+        }
+
+        private void anneePicker_SelectedIndexChanged(object sender, EventArgs e) {
+            calculateStats();
+        }
+
+        private void calculateStats() {
+            if (entryList.Count > 0) {
+                solde = 0;
+                
+                List<decimal> depenses = new List<decimal>();
+
+                entreeGridView.FirstDisplayedScrollingRowIndex = entreeGridView.Rows.GetLastRow(DataGridViewElementStates.None);
+
+                foreach (Entree entry in entryList) {
+                    solde += entry.Montant;
+
+                    if (entry.Montant < 0)
+                        depenses.Add(entry.Montant);
+                }
+
+                //variationMensuelleShow;
+                //variationAnnuelleShow;
+                //depenseMoyenneMensuelleShow;
+                depenseMoyenneShow.Text = (depenses.Sum() / depenses.Count).ToString("C2"); // Je ne sais pas pourquoi ça ajoute des parenthèses
+                sommeActuelleShow.Text = solde.ToString("C2");
+            }
+        }
+
+        private void changeStateOfAll(bool state) {
+            dateInput.Enabled = state;
+            raisonInput.Enabled = state;
+            montantInput.Enabled = state;
+            envoyerButton.Enabled = state;
+            monthPicker.Enabled = state;
+            anneePicker.Enabled = state;
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e) {
             if (path != null) {
                 List<string> contenu = new List<string>();
 
-                for (int i = 0; i < entryList.Count; i++) {
-                    Entree entreeTemp = entryList[i];
-
-                    contenu.Add(i.ToString() + ";" +
-                        entreeTemp.Date.ToString("yyyy-MM-dd") + ";" +
-                        entreeTemp.Raison + ";" +
-                        entreeTemp.Montant.ToString("0.00"));
-                }
+                foreach (Entree entry in entryList)
+                    contenu.Add(entry.EntreeToStringOutput());
 
                 File.WriteAllLines(path, contenu.ToArray());
             }
-        }
-    }
-
-    public class Entree {
-        public DateTime Date { get; set; }
-        public String Raison { get; set; }
-        public decimal Montant { get; set; }
-
-        public Entree(DateTime _date, String _raison, decimal _montant) {
-            this.Date = _date;
-            this.Raison = _raison;
-            this.Montant = _montant;
-        }
-
-        public string[] EntreeToString() {
-            string[] row = {
-                Date.ToString("yyyy-MM-dd"),
-                Raison,
-                Montant.ToString()
-            };
-
-            return row;
         }
     }
 }
