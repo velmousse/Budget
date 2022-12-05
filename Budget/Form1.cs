@@ -12,7 +12,6 @@ using System.Windows.Forms;
 namespace Budget {
     public partial class Form1 : Form {
         const char SEPARATOR = ';';
-
         protected String path;
         protected BindingList<Entree> entryList;
         protected decimal solde;
@@ -36,8 +35,6 @@ namespace Budget {
             monthPicker.ValueMember = "Key";
 
             changeStateOfAll(false);
-
-            // set base path;
         }
 
         private void raisonInput_MouseDoubleClick(object sender, EventArgs e) {
@@ -77,14 +74,8 @@ namespace Budget {
             if (openFile.ShowDialog() == DialogResult.OK) {
                 errorLoadingLabel.Text = "";
                 path = openFile.FileName;
-                fileInput.Text = path;
-
-                searchInput.Enabled = false;
-
-                changeStateOfAll(true);
 
                 loadData();
-                calculateStats();
             } else {
                 errorLoadingLabel.Text = "Veuillez entrer un fichier valide.";
 
@@ -94,6 +85,8 @@ namespace Budget {
 
         private void loadData() {
             if (File.Exists(path)) {
+                fileInput.Text = path;
+
                 String[] lines = File.ReadAllLines(path);
                 int i = 0;
 
@@ -108,6 +101,10 @@ namespace Budget {
                         entreeGridView[2, i].Style.BackColor = Color.DarkSeaGreen;
                     i++;
                 }
+
+                searchInput.Enabled = false;
+                changeStateOfAll(true);
+                calculateStats();
             }
         }
 
@@ -160,6 +157,12 @@ namespace Budget {
 
                 File.WriteAllLines(path, contenu.ToArray());
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e) {
+            PCFGHelper pcfgHelper = new PCFGHelper();
+            if ((path = pcfgHelper.AppPath) != null)
+                loadData();
         }
     }
 }

@@ -59,11 +59,11 @@
             this.searchInput = new System.Windows.Forms.Button();
             this.errorLoadingLabel = new System.Windows.Forms.Label();
             this.entreeGridView = new System.Windows.Forms.DataGridView();
+            this.openFile = new System.Windows.Forms.OpenFileDialog();
             this.dateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.raisonDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.montantDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.entreeBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.openFile = new System.Windows.Forms.OpenFileDialog();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -470,6 +470,10 @@
             this.entreeGridView.Size = new System.Drawing.Size(511, 680);
             this.entreeGridView.TabIndex = 6;
             // 
+            // openFile
+            // 
+            this.openFile.Filter = "CSV Files (*.csv)|*.csv";
+            // 
             // dateDataGridViewTextBoxColumn
             // 
             this.dateDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -496,10 +500,6 @@
             // 
             this.entreeBindingSource.DataSource = typeof(Budget.Entree);
             // 
-            // openFile
-            // 
-            this.openFile.Filter = "CSV Files (*.csv)|*.csv";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -511,6 +511,7 @@
             this.Name = "Form1";
             this.Text = "Budget v1.0";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);

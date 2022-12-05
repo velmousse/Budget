@@ -1,0 +1,14 @@
+[Budget]
+C:\Users\folder_loc\Budget.csv
+
+// Ceci est un exemple de fichier de configuration de mes apps mal faites.
+// Pour fonctionner, le fichier doit se trouver dans le dossier :
+// 
+// Documents
+//
+// De plus, il doit être nommé 
+//
+// .pcfg
+//
+// Vous pouvez enlever les commentaires.
+// Il n'est pas nécessaire pour le fonctionnement de l'app.
