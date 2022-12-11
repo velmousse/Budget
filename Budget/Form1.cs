@@ -149,7 +149,7 @@ namespace Budget {
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e) {
-            if (path != null) {
+            if (path != "") {
                 List<string> contenu = new List<string>();
 
                 foreach (Entree entry in entryList)
