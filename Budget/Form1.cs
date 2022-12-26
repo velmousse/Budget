@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace Budget {
     public partial class Form1 : Form {
@@ -42,9 +43,17 @@ namespace Budget {
             raisonInput.ForeColor = Color.Black;
         }
 
+        private void raisonInput_Enter(object sender, EventArgs e) {
+            raisonInput_MouseDoubleClick(sender, e);
+        }
+
         private void montantInput_MouseDoubleClick(object sender, EventArgs e) {
             montantInput.Text = "";
             montantInput.ForeColor = Color.Black;
+        }
+
+        private void montantInput_Enter(object sender, EventArgs e) {
+            montantInput_MouseDoubleClick(sender, e);
         }
 
         private void envoyerButton_Click(object sender, EventArgs e) {
@@ -53,7 +62,7 @@ namespace Budget {
                 errorLabel.Text = "";
                 
                 Entree tempEntree = new Entree(DateTime.Parse(dateInput.Value.ToString("yyyy-MM-dd")), 
-                    raisonInput.Text, decimal.Parse(montantInput.Text));
+                    raisonInput.Text, decimal.Parse(montantInput.Text.Replace('.', ',')));
                 entryList.Add(tempEntree);
 
                 raisonInput.Text = "";
@@ -64,6 +73,7 @@ namespace Budget {
                 else
                     entreeGridView[2, entreeGridView.Rows.GetLastRow(DataGridViewElementStates.None)].Style.BackColor = Color.DarkSeaGreen;
 
+                dateInput.Focus();
                 calculateStats();
             } else {
                 errorLabel.Text = "Veuillez entrer des informations valides.";
@@ -112,12 +122,17 @@ namespace Budget {
             calculateStats();
         }
 
+        // Doublon
         private void anneePicker_SelectedIndexChanged(object sender, EventArgs e) {
             calculateStats();
         }
 
         private void calculateStats() {
             if (entryList.Count > 0) {
+                //entryList = new BindingList<Entree>(entryList.OrderBy(x => x.Date).ToList());
+                //entryList.ResetBindings(); // Ne fonctionne pas
+                // Soit trouver un moyen de sort et d'afficher, soit insérer au bon endroit sur le coup
+
                 solde = 0;
                 
                 List<decimal> depenses = new List<decimal>();
@@ -134,7 +149,7 @@ namespace Budget {
                 //variationMensuelleShow;
                 //variationAnnuelleShow;
                 //depenseMoyenneMensuelleShow;
-                depenseMoyenneShow.Text = (depenses.Sum() / depenses.Count).ToString("C2"); // Je ne sais pas pourquoi ça ajoute des parenthèses
+                depenseMoyenneShow.Text = (depenses.Sum() / depenses.Count).ToString("C2").Replace("(", "").Replace(")", ""); // Je ne sais pas pourquoi ça ajoute des parenthèses
                 sommeActuelleShow.Text = solde.ToString("C2");
             }
         }
@@ -163,6 +178,14 @@ namespace Budget {
             PCFGHelper pcfgHelper = new PCFGHelper();
             if ((path = pcfgHelper.AppPath) != null)
                 loadData();
+        }
+
+        private void montantInput_KeyPress(object sender, KeyPressEventArgs e) {
+            if (e.KeyChar == ((char)Keys.Enter)) {
+                envoyerButton_Click(sender, e);
+                
+                e.Handled = true;
+            }
         }
     }
 }
